@@ -1,6 +1,8 @@
 ---
 title: <length>
 slug: Web/CSS/length
+l10n:
+  sourceCommit: bb6092c4230b69c2eceae6910af68c73955cae1c
 ---
 
 {{CSSRef}}
@@ -15,13 +17,15 @@ slug: Web/CSS/length
 
 > **メモ:** 負の `<length>` を許容するプロパティとそうでないプロパティがあります。
 
-### 単位
+The [specified value](/en-US/docs/Web/CSS/specified_value) of a length (_specified length_) is represented by its quantity and unit. The [computed value](/en-US/docs/Web/CSS/computed_value) of a length (_computed length_) is the specified length resolved to an absolute length, and its unit is not distinguished.
 
-#### 相対的な長さの単位
+The `<length>` units can be relative or absolute. 相対的な長さとは、他の長さに従って長さを指定することです。単位によって、これは特定の文字の寸法であったり、[行の高さ](/ja/docs/Web/CSS/line-height)であったり、{{glossary("viewport", "ビューポート")}}の寸法であったりします。 Style sheets that use relative length units can more easily scale from one output environment to another.
 
-相対的な長さとは、他の長さに従って長さを指定することです。単位によって、これは特定の文字の寸法であったり、[行の高さ](/ja/docs/Web/CSS/line-height)であったり、{{glossary("viewport", "ビューポート")}}の寸法であったりします。
+> **メモ:** Child elements do not inherit the relative values as specified for their parent; they inherit the computed values.
 
-##### フォントの相対長
+The relative length units listed here are based on font and viewport.
+
+### フォントの相対長
 
 フォントの相対長では、 `<length>` の値を、要素やその親で現在使われているフォントにおける、特定の文字やフォント属性の寸法で定義します。
 
@@ -48,24 +52,118 @@ slug: Web/CSS/length
 - `rlh` {{experimental_inline}}
   - : ルート要素 (ふつうは {{HTMLElement("html")}}) の {{Cssxref("line-height")}} プロパティの計算値と同じで、絶対的な長さに変換されます。ルート要素の {{Cssxref("font-size")}} または {{Cssxref("line-height")}} プロパティに使われた場合は、プロパティの初期値になります。
 
-##### ビューポートのパーセント値による寸法
+### ビューポートのパーセント値による寸法
 
-ビューポートのパーセント値による寸法は、{{glossary("viewport", "ビューポート")}}、つまり文書の見える範囲の寸法に対する相対的な `<length>` 値を定義します。ビューポートの寸法は {{cssxref("@page")}} で宣言されたブロックでは無効です。
+The viewport-percentage length units are based on four different viewport sizes: small, large, dynamic, and default. The allowance for the different viewport sizes is in response to browser interfaces expanding and retracting dynamically and hiding and showing the content underneath.
+
+- **Small**
+
+  - : When you want the smallest possible viewport in response to browser interfaces expanding dynamically, you should use the small viewport size. The small viewport size allows the content you design to fill the entire viewport when browser interfaces are expanded. Choosing this size might also possibly leave empty spaces when browser interfaces retract.
+
+    For example, an element that is sized using viewport-percentage units based on the small viewport size, the element will fill the screen perfectly without any of its content being obscured when all the dynamic browser interfaces are shown. When those browser interfaces are hidden, however, there might be extra space visible around the element. Therefore, the small viewport-percentage units are "safer" to use in general, but might not produce the most attractive layout after a user starts interacting with the page.
+
+    The small viewport size is represented by the `sv` prefix and results in the `sv*` viewport-percentage length units. The sizes of the small viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
+
+- **Large**
+
+  - : When you want the largest possible viewport in response to browser interfaces retracting dynamically, you should use the large viewport size. The large viewport size allows the content you design to fill the entire viewport when browser interfaces are retracting. You need to be aware though that the content might get hidden when browser interfaces expand.
+
+    For example, on mobile phones where the screen real-estate is at a premium, browsers often hide part or all of the title and address bar after a user starts scrolling the page. When an element is sized using a viewport-percentage unit based on the large viewport size, the content of the element will fill the entire visible page when these browser interfaces are hidden. However, when these retractable browser interfaces are shown, they can hide the content that is sized or positioned using the _large_ viewport-percentage units.
+
+    The large viewport unit is represented by the `lv` prefix and results in the `lv*` viewport-percentage units. The sizes of the large viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
+
+- **Dynamic**
+
+  - : When you want the viewport to be automatically sized in response to browser interfaces dynamically expanding or retracting, you can use the dynamic viewport size. The dynamic viewport size allows the content you design to fit exactly within the viewport, irrespective of the presence of dynamic browser interfaces.
+
+    The dynamic viewport unit is represented by the `dv` prefix and results in the `dv*` viewport-percentage units. The sizes of the dynamic viewport-percentage units are not stable, even when the viewport itself is unchanged.
+
+    > **Note:** While the dynamic viewport size can give you more control and flexibility, using viewport-percentage units based on the dynamic viewport size can cause the content to resize while a user is scrolling a page. This can lead to degradation of the user interface and cause a performance hit.
+
+- **Default**
+
+  - : The default viewport size is defined by the browser. The behavior of the resulting viewport-percentage unit could be equivalent to the viewport-percentage unit based on the small viewport size, the large viewport size, an intermediate size between the two, or the dynamic viewport size.
+
+    > **Note:** For example, a browser might implement the default viewport-percentage unit for height (`vh`) that is equivalent to the large viewport-percentage height unit (`lvh`). If so, this could obscure content on a full-page display while the browser interface is expanded.
+
+Viewport-percentage lengths define `<length>` values in percentage relative to the size of the initial [containing block](/en-US/docs/Web/CSS/Containing_block), which in turn is based on either the size of the {{Glossary("viewport")}} or the page area, i.e., the visible portion of the document. When the height or width of the initial containing block is changed, the elements that are sized based on them are scaled accordingly. There is a viewport-percentage length unit variant corresponding to each of the viewport sizes, as described below.
+
+> **メモ:** ビューポートの寸法は {{cssxref("@page")}} で宣言されたブロックでは無効です。
 
 - `vh`
+
   - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における高さの 1% と同じです。
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svh`, `lvh`, and `dvh`. `vh` represents the viewport-percentage length unit based on the browser default viewport size.
+
 - `vw`
+
   - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における幅の 1% と同じです。
-- `vi` {{experimental_inline}}
-  - : 初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における、ルート要素の[インライン軸](/ja/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline)の寸法の 1% と同じです。
-- `vb` {{experimental_inline}}
-  - : 初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における、ルート要素の[ブロック軸](/ja/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline)の寸法の 1% と同じです。
-- `vmin`
-  - : `vw` と `vh` の小さい方です。
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svw`, `lvw`, and `dvw`.
+    `vw` represents the viewport-percentage length unit based on the browser default viewport size.
+
 - `vmax`
+
   - : `vw` と `vh` の大きい方です。
 
-#### 絶対的な長さの単位
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svmax`, `lvmax`, and `dvmax`.
+    `vmax` represents the viewport-percentage length unit based on the browser default viewport size.
+
+- `vmin`
+
+  - : `vw` と `vh` の小さい方です。
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svmin`, `lvmin`, and `dvmin`.
+    `vmin` represents the viewport-percentage length unit based on the browser default viewport size.
+
+- `vb`
+
+  - : 初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における、ルート要素の[ブロック軸](/ja/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline)の寸法の 1% と同じです。
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svb`, `lvb`, and `dvb`, respectively.
+    `vb` represents the viewport-percentage length unit based on the browser default viewport size.
+
+- `vi`
+
+  - : 初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における、ルート要素の[インライン軸](/ja/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline)の寸法の 1% と同じです。
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svi`, `lvi`, and `dvi`.
+    `vi` represents the viewport-percentage length unit based on the browser default viewport size.
+
+
+### Container query length units
+
+When applying styles to a container using container queries, you can use container query length units.
+These units specify a length relative to the dimensions of a query container.
+Components that use units of length relative to their container are more flexible to use in different containers without having to recalculate concrete length values.
+For more information, see [Container queries](/en-US/docs/Web/CSS/CSS_Container_Queries).
+
+- `cqw`
+
+  - : Represents a percentage of the width of the query container. `1cqw` is 1% of the query container's width. For example, if the query container's width is `800px`, then a value of `50cqw` on a property will be `400px`.
+
+- `cqh`
+
+  - : Represents a percentage of the height of the query container. `1cqh` is 1% of the query container's height. For example, if the query container's height is `300px`, then a value of `10cqh` on a property will be `30px`.
+
+- `cqi`
+
+  - : Represents a percentage of the inline size of the query container. `1cqi` is 1% of the query container's inline size. For example, if the query container's inline size is `800px`, then a value of `50cqi` on a property will be `400px`.
+
+- `cqb`
+
+  - : Represents a percentage of the block size of the query container. `1cqb` is 1% of the query container's block size. For example, if the query container's block size is `300px`, then a value of `10cqb` on a property will be `30px`.
+
+- `cqmin`
+
+  - : Represents a percentage of the smaller value of either the query container's inline size or block size. `1cqmin` is 1% of the smaller value of either the query container's inline size or block size. For example, if the query container's inline size is `800px` and its block size is `300px`, then a value of `50cqmin` on a property will be `150px`.
+
+- `cqmax`
+
+  - : Represents a percentage of the larger value of either the query container's inline size or block size. `1cqmax` is 1% of the larger value of either the query container's inline size or block size. For example, if the query container's inline size is `800px` and its block size is `300px`, then a value of `50cqmax` on a property will be `400px`.
+
+### 絶対的な長さの単位
 
 絶対的な長さの単位は、出力メディアの物理的な特性が分かっている場合 (印刷レイアウトなど) に物理的な長さを表します。これはある単位を物理的な単位に固定してから、これを基準に他の単位を定義します。固定する単位は画面のような低解像度の端末か、あるいはプリンターのような高解像度の端末かによって異なります。
 
