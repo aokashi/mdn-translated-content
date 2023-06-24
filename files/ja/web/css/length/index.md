@@ -22,7 +22,7 @@ l10n:
 
 `<length>` は絶対的な長さあるいは相対的な長さからなります。相対的な長さとは、他の長さに従って長さを指定することです。単位によって、これは特定の文字の寸法であったり、[行の高さ](/ja/docs/Web/CSS/line-height)であったり、{{glossary("viewport", "ビューポート")}}の寸法であったりします。相対的な長さの単位を用いたスタイルシートを使用することで、ある場所で作った出力環境を別の場所に簡単に拡張できます。
 
-> **メモ:** 子要素は親要素で指定された相対値を継承しません。計算された値を継承します。
+> **メモ:** 子要素は親要素で指定された相対値を継承しません。計算値を継承します。
 
 ここに記載されている相対的な長さの単位は、フォントとビューポートをベースとして計算しています。
 
@@ -52,17 +52,17 @@ l10n:
 
 ### ビューポートの相対長
 
-The viewport-percentage length units are based on four different viewport sizes: small, large, dynamic, and default. The allowance for the different viewport sizes is in response to browser interfaces expanding and retracting dynamically and hiding and showing the content underneath.
+ビューポートの長さの単位はスモールとラージ、ダイナミック、デフォルトの4つのサイズからなります。異なるビューポートサイズとはブラウザーのインターフェイスを拡大縮小したり、ブラウザー下部の表示を切り替えたりすることで値が変わります。
 
-- **Small**
+- **スモール**
 
-  - : When you want the smallest possible viewport in response to browser interfaces expanding dynamically, you should use the small viewport size. The small viewport size allows the content you design to fill the entire viewport when browser interfaces are expanded. Choosing this size might also possibly leave empty spaces when browser interfaces retract.
+  - : ブラウザーのインターフェイスが動的に拡大されると同時に、可能な限り小さなビューポートが必要な場合は、スモールのビューポートサイズを使用する必要があります。スモールのビューポートサイズはブラウザーのインターフェイスが拡大されたときに、コンテンツがビューポート全体を満たすようにします。また、このサイズを選択すると、ブラウザーのインターフェイスを縮小した時に空白のスペースが残る可能性があります。
 
-    For example, an element that is sized using viewport-percentage units based on the small viewport size, the element will fill the screen perfectly without any of its content being obscured when all the dynamic browser interfaces are shown. When those browser interfaces are hidden, however, there might be extra space visible around the element. Therefore, the small viewport-percentage units are "safer" to use in general, but might not produce the most attractive layout after a user starts interacting with the page.
+    例えば、スモールのビューポートサイズに基づいたビューポート単位を使用してサイズ設定された要素は、ブラウザーの動的なインターフェイスがすべて表示されている時に、コンテンツが隠れることなく完全に画面内に表示します。しかし、ブラウザーのインターフェイスが隠されると、その要素の周りには余分なスペースが見えるかもしれません。したがって、小さなビューポートサイズは一般的には「安全」ですが、ユーザーがページ上を操作したりしたときには、最も見栄えのいいレイアウトができないかもしれません。
 
-    The small viewport size is represented by the `sv` prefix and results in the `sv*` viewport-percentage length units. The sizes of the small viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
+    スモールのビューポートサイズは `sv` 接頭辞で表記され、 `sv*` サイズ単位になります。スモールのビューポートサイズの単位のサイズは固定なので、ビューポートのサイズが変更されない限り安定して計算されます。
 
-- **Large**
+- **ラージ**
 
   - : When you want the largest possible viewport in response to browser interfaces retracting dynamically, you should use the large viewport size. The large viewport size allows the content you design to fill the entire viewport when browser interfaces are retracting. You need to be aware though that the content might get hidden when browser interfaces expand.
 
@@ -70,7 +70,7 @@ The viewport-percentage length units are based on four different viewport sizes:
 
     The large viewport unit is represented by the `lv` prefix and results in the `lv*` viewport-percentage units. The sizes of the large viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
 
-- **Dynamic**
+- **ダイナミック**
 
   - : When you want the viewport to be automatically sized in response to browser interfaces dynamically expanding or retracting, you can use the dynamic viewport size. The dynamic viewport size allows the content you design to fit exactly within the viewport, irrespective of the presence of dynamic browser interfaces.
 
@@ -78,7 +78,7 @@ The viewport-percentage length units are based on four different viewport sizes:
 
     > **Note:** While the dynamic viewport size can give you more control and flexibility, using viewport-percentage units based on the dynamic viewport size can cause the content to resize while a user is scrolling a page. This can lead to degradation of the user interface and cause a performance hit.
 
-- **Default**
+- **デフォルト**
 
   - : The default viewport size is defined by the browser. The behavior of the resulting viewport-percentage unit could be equivalent to the viewport-percentage unit based on the small viewport size, the large viewport size, an intermediate size between the two, or the dynamic viewport size.
 
