@@ -17,13 +17,14 @@ l10n:
 
 > **メモ:** 負の `<length>` を許容するプロパティとそうでないプロパティがあります。
 
-The [specified value](/en-US/docs/Web/CSS/specified_value) of a length (_specified length_) is represented by its quantity and unit. The [computed value](/en-US/docs/Web/CSS/computed_value) of a length (_computed length_) is the specified length resolved to an absolute length, and its unit is not distinguished.
+<!-- TODO 「表されます」の表記については議論あり。後で調べて適切な形に修正すべき。 -->
+長さの [指定値](/ja/docs/Web/CSS/specified_value) (_specified length_) はその量と単位で表されます。長さの [計算値](/ja/docs/Web/CSS/computed_value) (_computed length_) は指定された長さを絶対値へと計算したものであり、単位は区別しません。
 
-The `<length>` units can be relative or absolute. 相対的な長さとは、他の長さに従って長さを指定することです。単位によって、これは特定の文字の寸法であったり、[行の高さ](/ja/docs/Web/CSS/line-height)であったり、{{glossary("viewport", "ビューポート")}}の寸法であったりします。 Style sheets that use relative length units can more easily scale from one output environment to another.
+`<length>` は絶対的な長さあるいは相対的な長さからなります。相対的な長さとは、他の長さに従って長さを指定することです。単位によって、これは特定の文字の寸法であったり、[行の高さ](/ja/docs/Web/CSS/line-height)であったり、{{glossary("viewport", "ビューポート")}}の寸法であったりします。相対的な長さの単位を用いたスタイルシートを使用することで、ある場所で作った出力環境を別の場所に簡単に拡張できます。
 
-> **メモ:** Child elements do not inherit the relative values as specified for their parent; they inherit the computed values.
+> **メモ:** 子要素は親要素で指定された相対値を継承しません。計算された値を継承します。
 
-The relative length units listed here are based on font and viewport.
+ここに記載されている相対的な長さの単位は、フォントとビューポートをベースとして計算しています。
 
 ### フォントの相対長
 
@@ -34,25 +35,22 @@ The relative length units listed here are based on font and viewport.
 - `cap` {{experimental_inline}}
   - : その要素の {{Cssxref("font")}} における "cap height" (ふつうの大文字の高さ) を表します。
 - `ch`
-
   - : その要素の {{Cssxref("font")}} における "0" (ゼロ、Unicode 文字 U+0030) の幅、より正確に言えば advance measure です。
-
     "0" の文字の大きさを判断することが不可能または無意味である場合、幅が 0.5em、高さが 1em と仮定します。
-
 - `em`
   - : その要素の {{Cssxref("font-size")}} の計算値を表します。{{Cssxref("font-size")}} プロパティ自身に使われた場合は、要素に<em>継承された</em>フォントの大きさを表します。
 - `ex`
   - : その要素の {{Cssxref("font")}} における [x-height](https://en.wikipedia.org/wiki/X-height) です。 'x' の文字を持つフォントでは一般的に、フォントにおける小文字の高さに相当します。多くのフォントでは `1ex ≈ 0.5em` です。
-- `ic` {{experimental_inline}}
+- `ic`
   - : 描画に使用されるフォントにおける「水」 (CJK water ideograph, U+6C34) の文字の advance measure と同じです。
-- `lh` {{experimental_inline}}
+- `lh`
   - : 使用されている要素の {{Cssxref("line-height")}} プロパティの計算値と同じで、絶対的な長さに変換されます。
 - `rem`
   - : ルート要素 (ふつうは {{HTMLElement("html")}}) の {{Cssxref("font-size")}} を表します。ルート要素の {{Cssxref("font-size")}} で使うと初期値を表します (多くのブラウザーでは既定値は `16px` ですが、ユーザー設定によって変わる可能性があります)。
-- `rlh` {{experimental_inline}}
+- `rlh`
   - : ルート要素 (ふつうは {{HTMLElement("html")}}) の {{Cssxref("line-height")}} プロパティの計算値と同じで、絶対的な長さに変換されます。ルート要素の {{Cssxref("font-size")}} または {{Cssxref("line-height")}} プロパティに使われた場合は、プロパティの初期値になります。
 
-### ビューポートのパーセント値による寸法
+### ビューポートの相対長
 
 The viewport-percentage length units are based on four different viewport sizes: small, large, dynamic, and default. The allowance for the different viewport sizes is in response to browser interfaces expanding and retracting dynamically and hiding and showing the content underneath.
 
@@ -92,13 +90,13 @@ Viewport-percentage lengths define `<length>` values in percentage relative to t
 
 - `vh`
 
-  - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における高さの 1% と同じです。
+  - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における高さの 1% と同じです。例えばビューポートの高さが `300px` とした場合、 `70vh` の値は `210px` になります。
 
     For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svh`, `lvh`, and `dvh`. `vh` represents the viewport-percentage length unit based on the browser default viewport size.
 
 - `vw`
 
-  - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における幅の 1% と同じです。
+  - : ビューポートの初期値の[包含ブロック](/ja/docs/Web/CSS/Containing_block)における幅の 1% と同じです。例えばビューポートの幅が `800px` とした場合、 `50vh` の値は `400px` になります。
 
     For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svw`, `lvw`, and `dvw`.
     `vw` represents the viewport-percentage length unit based on the browser default viewport size.
