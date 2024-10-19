@@ -21,25 +21,25 @@ l10n:
 
 タイルアトラスを使用することで、各タイルに自動で **インデックス** が付与されるメリットもあります。インデックスはタイルマップを作成する時のタイルの識別子として適しています。
 
-## The tilemap data structure
+## タイルマップの構造
 
-It is common to group all the information needed to handle tilemaps into the same data structure or object. These data objects ([map object example](https://github.com/mozdevs/gamedev-js-tiles/blob/gh-pages/square/no-scroll.js#L1-L18)) should include:
+タイルマップを扱うのに必要なすべての情報を、同じデータやオブジェクトにまとめるのが一般的です。これらのデータやオブジェクト ([マップオブジェクトの例](https://github.com/mozdevs/gamedev-js-tiles/blob/gh-pages/square/no-scroll.js#L1-L18)) は以下の内容を含むべきです。
 
-- **Tile size**: The size of each tile in pixels across / pixels down.
-- **Image atlas**: The Image atlas that will be used (one or many.)
-- **Map dimensions**: The dimensions of the map, either in tiles across / tiles down, or pixels across / pixels down.
-- **Visual grid**: Includes indices showing what type of tile should be placed on each position in the grid.
-- **Logic grid**: This can be a collision grid, a path-finding grid, etc., depending on the type of game.
+- **タイルサイズ**: 各タイルのサイズ (横ピクセル / 縦ピクセル)。
+- **画像**: 使用されるタイルアトラスの画像 (1 つまたは複数)。
+- **マップサイズ**: マップのサイズ。縦横のタイル数、または縦横のピクセル数。
+- **表示グリッド**: グリッドの各位置にどの種類のタイルを置くかをインデックスを含めて示す。
+- **論理グリッド**: ゲームの種類によっては、衝突検出や経路探索などになる。
 
 > [!NOTE]
-> For the visual grid, a special value (usually a negative number, `0` or `null`) is needed to represent empty tiles.
+> 表示グリッドでは、空のタイルを示すために特別な値 (通常は負の数か `0`、 `null` ) が必要です。
 
-## Square tiles
+## スクエアタイル
 
-Square-based tilemaps are the most simple implementation. A more generic case would be rectangular-based tilemaps — instead of square — but they are far less common. Square tiles allow for two **perspectives**:
+正方形のタイルマップは最もシンプルに実装できます。より汎用的なケースとして正方形ではなく長方形のタイルマップもありますが、それほど一般的ではありません。スクエアタイルでは、 2 つの見方があります。
 
-- Top-down (like many RPG's or strategy games like _Warcraft 2_ or _Final Fantasy_'s world view.)
-- Side-view (like platformers such as _Super Mario Bros_.)
+- トップダウン (「ウォークラフト 2」や「ファイナルファンタジー」シリーズのフィールド画面のような多くの RPG やストラテジーゲーム)
+- サイドビュー（「スーパーマリオブラザーズ」のようなプラットフォームゲーム）
 
 ### Static tilemaps
 
