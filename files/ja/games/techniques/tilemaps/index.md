@@ -36,16 +36,16 @@ l10n:
 
 ## スクエアタイル
 
-正方形のタイルマップは最もシンプルに実装できます。より汎用的なケースとして正方形ではなく長方形のタイルマップもありますが、それほど一般的ではありません。スクエアタイルでは、 2 つの見方があります。
+正方形のタイルマップは最もシンプルに実装できます。より汎用的な形としては、正方形ではなく長方形のタイルとすべきでしょうが、それほど一般的ではありません。スクエアタイルでは、 2 つの見方があります。
 
 - トップダウン (「ウォークラフト 2」や「ファイナルファンタジー」シリーズのフィールド画面のような多くの RPG やストラテジーゲーム)
 - サイドビュー（「スーパーマリオブラザーズ」のようなプラットフォームゲーム）
 
-### Static tilemaps
+### 静的タイルマップ
 
-A tilemap can either fit into the visible screen area screen or be larger. In the first case, the tilemap is **static** — it doesn't need to be scrolled to be fully shown. This case is very common in arcade games like _Pacman_, _Arkanoid_, or _Sokoban_.
+タイルマップは表示可能な画面領域内に収めるか、より大きくすることができます。最初の段階では、タイルマップは **静的** であり、マップ全体を表示するためにスクロールする必要はありません。このケースでは「パックマン」や「アルカノイド」、「倉庫番」などのアーケードゲームでよく見られます。
 
-Rendering static tilemaps is easy, and can be done with a nested loop iterating over columns and rows. A high-level algorithm could be:
+静的タイルマップのレンダリングは簡単で、列と行をネストさせたループで繰り返すことでできます。高レベルのアルゴリズムでは次のようにできます。
 
 ```js
 for (let column = 0; column < map.columns; column++) {
@@ -58,20 +58,20 @@ for (let column = 0; column < map.columns; column++) {
 }
 ```
 
-You can read more about this and see an example implementation in [Square tilemaps implementation: Static maps](/en-US/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation:_Static_maps).
+詳細は [スクエアタイルマップの実装: 静的タイルマップ](/ja/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation:_Static_maps) で説明されていて、実装例も見ることができます。
 
-### Scrolling tilemaps
+### スクロールタイルマップ
 
-**Scrolling** tilemaps only show a small portion of the world at a time. They can follow a character — like in platformers or RPGs — or allow the player to control the camera — like in strategy or simulation games.
+**スクロールする** タイルマップはゲームワールドのほんの一部しか表示されません。プラットフォーマーや　RPG のようにキャラクターを追ったり、ストラテジーやシミュレーションゲームのようにプレイヤーがカメラを操作したりすることができます。
 
-#### Positioning and camera
+#### 位置合わせとカメラ
 
-In all scrolling games, we need a translation between **world coordinates** (the position where sprites or other elements are located in the level or game world) and **screen coordinates** (the actual position where those elements are rendered on the screen). The world coordinates can be expressed in terms of tile position (row and column of the map) or in pixels across the map, depending on the game. To be able to transform world coordinates into screen coordinates, we need the coordinates of the camera, since they determine which section of the world is being displayed.
+すべてのスクロールするゲームでは、 **ワールド座標** (スプライトや他の要素がゲームワールド上に位置する座標) と **画面上の座標** (それらの要素が画面上でレンダリングされる実際の位置) の間で変換する必要があります。ワールド座標はゲームによって、タイルの位置 (マップ上の行と列) またはマップ全体のピクセル単位で表すことができます。ワールド座標を画面上の座標に変換できるようにするには、カメラの座標が必要です。
 
-Here are examples showing how to translate from world coordinates to screen coordinates and back again:
+ワールド座標から画面上の座標への変換と、その逆を示す例は以下の通りです。
 
 ```js
-// these functions assume that the camera points to the top left corner
+// これらの関数は、カメラが一番左上隅にあると仮定しています。
 
 function worldToScreen(x, y) {
   return { x: x - camera.x, y: y - camera.y };
@@ -82,28 +82,28 @@ function screenToWorld(x, y) {
 }
 ```
 
-#### Rendering
+#### レンダリング
 
-A trivial method for rendering would just be to iterate over all the tiles (like in static tilemaps) and draw them, subtracting the camera coordinates (like in the `worldToScreen()` example shown above) and letting the parts that fall outside the view window sit there, hidden. Drawing all the tiles that can not be seen is wasteful, however, and can take a toll on performance. **Only tiles that are at visible should be rendered** ideally — see the [Performance](#performance) section for more ideas on improving rendering performance.
+タイルマップを描画する大雑把な方法は (静的タイルマップのように) すべてのタイルを繰り返して描画し、 (上に示した `worldToScreen()` の例のように) カメラ座標を差し引いて、画面領域の外に落ちるタイルを隠して置くことです。しかし、見えないタイルをすべてを繰り返し描画するのは無駄が多く、パフォーマンスの低下に繋がります。理想としては、 **目に見えるタイルだけを描画するべき** です。レンダリングのパフォーマンスを向上させる方法については [パフォーマンス](#performance) を参照してください。
 
-You can read more about implementing scrolling tilemaps and see some example implementations in [Square tilemaps implementation: Scrolling maps](/en-US/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation:_Scrolling_maps).
+スクロールタイルマップの実装の詳細は [スクエアタイルマップの実装: スクロールタイルマップ](/ja/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation:_Scrolling_maps) で説明されています。
 
-### Layers
+### レイヤー
 
-The visual grid is often made up of several layers. This allows us to have a richer game world with fewer tiles, since the same image can be used with different backgrounds. For instance, a rock that could appear on top of several terrain types (like grass, sand or brick) could be included on its own separate tile which is then rendered on a new layer, instead of several rock tiles, each with a different background terrain.
+ビジュアルグリッドは多くの場合、複数のレイヤーで構成されています。こうすることで、同じ画像をそれぞれ異なる背景で使用できるため、より少ないタイルでリッチなゲームを表現することができます。例えば、複数の地形 (草や砂、レンガなど) の上にある岩は、それぞれ背景の地形ごとの岩タイルを用意することなく、描画される新しいレイヤーに別々のタイルを含めることができます。
 
-If characters or other game sprites are drawn in the middle of the layer stack, this allows for interesting effects such as having characters walking behind trees or buildings.
+キャラクターや他のゲームのスプライトをレイヤー層の真ん中に描画すると、キャラクターが木や建物の後ろを歩くような面白い効果ができます。
 
-The following screenshot shows an example of both points: a character appearing _behind_ a tile (the knight appearing behind the top of a tree) and a tile (the bush) being rendered over different terrain types.
+以下のスクリーンショットは先ほど説明した両方の例を示しています。タイルの _後ろ_ に現れるキャラクター (木のてっぺんの後ろに現れる騎士) と、異なる地形の上に描画されるタイル (茂み) です。
 
-![A grid of layered background terrains. A bush tile is rendered at the top, over a large grass terrain, and again over a layered rectangular terrain with brown sand at the bottom. A tree tile is rendered over the grass terrain at the bottom left and again at the bottom right. A knight tile appears behind the tree tile that is rendered at the bottom left.](screen_shot_2015-10-06_at_15.56.05.png)
+![レイヤー化された背景の地形のグリッド。茂みタイルは前に描画され、大きな草の地形の上に置かれ、茶色の砂が敷かれた長方形の地形が後ろにある。木のタイルは左下と右下にある草の地形の前に描画される。騎士のタイルは左下に描画された木のタイルの後ろに現れる。](screen_shot_2015-10-06_at_15.56.05.png)
 
-### The logic grid
+### ロジックグリッド
 
-Since tilemaps are an actual grid of visual tiles, it is common to create a mapping between this visual grid and a logic grid. The most common case is to use this logic grid to handle collisions, but other uses are possible as well: character spawning points, detecting whether some elements are placed together in the right way to trigger a certain action (like in _Tetris_ or _Bejeweled_), path-finding algorithms, etc.
+タイルマップは実際のビジュアルタイルのグリッドなので、このビジュアルグリッドとロジックグリッドの間にマッピングを作成するのが一般的です。最も一般的なのは、当たり判定を処理するためにこのロジックグリッドを使用することですが、他にもキャラクターのスポーンポイントや (「テトリス」や「Bejeweled」のように) 特定のアクションを起こすためにいくつかの要素が正しく一緒に配置されているか検出するパスファインディングアルゴリズムの用途も可能です。
 
 > [!NOTE]
-> You can take a look at our demo that shows [how to use a logic grid to handle collisions](https://mozdevs.github.io/gamedev-js-tiles/square/logic-grid.html).
+> [ロジックグリッドを使用して当たり判定を検出する](https://mozdevs.github.io/gamedev-js-tiles/square/logic-grid.html) デモを見ることができます。
 
 ## Isometric tilemaps
 
